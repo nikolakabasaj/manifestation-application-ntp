@@ -78,8 +78,28 @@ func (*manifestationService) ValidateSearchRequest(searchRequest *model.SearchRe
 		return err
 	}
 
+	const layout = "2006-01-02"
+	empty, _ := time.Parse(layout, "0001-01-01")
+	if searchRequest.DateFrom == empty {
+		d, _ := time.Parse(layout, "1990-01-01")
+		searchRequest.DateFrom = d
+	}
+
+	if searchRequest.DateTo == empty {
+		d, _ := time.Parse(layout, "2100-01-01")
+		searchRequest.DateTo = d
+	}
+
 	if searchRequest.PriceFrom < 0 {
 		err := errors.New("The price is not valid.")
+		searchRequest.PriceFrom = 0
+		return err
+		
+	}
+
+	if searchRequest.PriceTo < 0 {
+		err := errors.New("The price is not valid.")
+		searchRequest.PriceTo = 10000
 		return err
 	}
 

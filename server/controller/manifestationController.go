@@ -85,7 +85,7 @@ func (*manifestationController) Search(response http.ResponseWriter, request *ht
 		response.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(response).Encode(model.ServiceError{Message: errVal.Error()})
 		fmt.Println(errVal)
-		return
+		return 
 	}
 
 	manifestations, err := manifestationService.Search(&searchRequest)
